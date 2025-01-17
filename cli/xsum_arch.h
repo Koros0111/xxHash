@@ -89,7 +89,8 @@
 /* Try to detect the architecture. */
 #if defined(XSUM_ARCH_X86)
 #  if defined(XXHSUM_DISPATCH)
-#    define XSUM_ARCH XSUM_ARCH_X86 " autoVec"
+     const char* XSUM_autox86(void);
+#    define XSUM_ARCH XSUM_autox86()
 #  elif defined(__AVX512F__)
 #    define XSUM_ARCH XSUM_ARCH_X86 " + AVX512"
 #  elif defined(__AVX2__)
@@ -160,6 +161,14 @@
 #    define XSUM_ARCH "wasm/asmjs + simd128"
 #  else
 #    define XSUM_ARCH "wasm/asmjs"
+#  endif
+#elif defined(__loongarch_lp64)
+#  if defined(__loongarch_asx)
+#    define XSUM_ARCH "loongarch64 + lasx"
+#  elif defined(__loongarch_sx)
+#    define XSUM_ARCH "loongarch64 + lsx"
+#  else
+#    define XSUM_ARCH "loongarch64"
 #  endif
 #else
 #  define XSUM_ARCH "unknown"
